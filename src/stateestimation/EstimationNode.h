@@ -118,6 +118,8 @@ public:
 
 	void publishTf(TooN::SE3<>, ros::Time stamp, int seq, std::string system);
 
+  bool useGUI(){ bool useGUI; nh_.param<bool>("useGUI",useGUI, false); return useGUI;}
+
 	// logging stuff
 	// logging stuff
 	std::ofstream* logfileIMU;

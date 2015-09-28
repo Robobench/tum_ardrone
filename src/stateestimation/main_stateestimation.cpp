@@ -35,20 +35,24 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "drone_stateestimation");
 
   ROS_INFO("Started TUM ArDrone Stateestimation Node.");
+  
 
   EstimationNode estimator;
-
+  
   dynamic_reconfigure::Server<tum_ardrone::StateestimationParamsConfig> srv;
   dynamic_reconfigure::Server<tum_ardrone::StateestimationParamsConfig>::CallbackType f;
   f = boost::bind(&EstimationNode::dynConfCb, &estimator, _1, _2);
   srv.setCallback(f);
 
   estimator.ptamWrapper->startSystem();
-  estimator.mapView->startSystem();
+  if(estimator.useGUI())
+    estimator.mapView->startSystem();
 
   estimator.Loop();
 
-  estimator.mapView->stopSystem();
+  if(estimator.useGUI())
+    estimator.mapView->stopSystem();
+
   estimator.ptamWrapper->stopSystem();
 
   return 0;
