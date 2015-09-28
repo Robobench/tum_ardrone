@@ -7,6 +7,7 @@
 #include <cvd/vector_image_ref.h>
 #include <cvd/image_interpolate.h>
 #include <TooN/Cholesky.h>
+#include <TooN/SVD.h>
 // tmmintrin.h contains SSE3<> instrinsics, used for the ZMSSD search at the bottom..
 // If this causes problems, just do #define CVD_HAVE_XMMINTRIN 0
 #if CVD_HAVE_XMMINTRIN
@@ -269,8 +270,10 @@ void PatchFinder::MakeSubPixTemplate()
       }
   
   // Invert JTJ..
-  Cholesky<3> chol(m3H);
-  mm3HInv = chol.get_inverse();
+  //Cholesky<3> chol(m3H);
+  SVD<3> svd;
+  svd.get_pinv();
+  //mm3HInv =chol.get_inverse();
   // TOON2 Does not have a get_rank for cholesky
   // int nRank = chol.get_rank();
   // if(nRank < 3)
